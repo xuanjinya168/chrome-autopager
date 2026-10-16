@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>AutoPager</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <img src="icons/icon48.png" alt="" />
+      <div>
+        <h1>AutoPager 自动分页</h1>
+        <p id="host" class="host">-</p>
+      </div>
+      <label class="switch" title="全局开关">
+        <input id="globalEnabled" type="checkbox" />
+        <span></span>
+      </label>
+    </header>
+
+    <section class="info">
+      <div class="row"><span>状态</span><strong id="status">-</strong></div>
+      <div class="row"><span>规则</span><strong id="rule">-</strong></div>
+      <div class="row"><span>已加载</span><strong id="pages">-</strong></div>
+    </section>
+
+    <section class="actions">
+      <button id="pauseBtn" type="button">暂停</button>
+      <button id="nextBtn" type="button">立即加载下一页</button>
+      <button id="siteBtn" type="button">对本站禁用</button>
+    </section>
+
+    <footer class="footer">
+      <button id="optionsBtn" type="button" class="link">规则与设置</button>
+      <span class="hint">快捷键 Alt+Shift+P 切换本站</span>
+    </footer>
+
+    <script src="shared/storage.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

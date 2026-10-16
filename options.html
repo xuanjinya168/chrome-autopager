@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>AutoPager 规则与设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="title">
+        <img src="icons/icon48.png" alt="" />
+        <h1>AutoPager 规则与设置</h1>
+      </header>
+
+      <section class="card">
+        <h2>全局设置</h2>
+        <form id="settingsForm" class="grid">
+          <label class="check">
+            <input name="enabled" type="checkbox" /> 启用自动分页
+          </label>
+          <label class="check">
+            <input name="syncUrl" type="checkbox" /> 滚动时同步地址栏到当前页
+          </label>
+          <label>
+            触发距离（距离正文底部多少像素时开始加载）
+            <input name="triggerDistance" type="number" min="100" max="10000" step="100" />
+          </label>
+          <label>
+            最大页数
+            <input name="maxPages" type="number" min="2" max="500" />
+          </label>
+          <label class="full">
+            <span>黑名单（每行一个域名，<code>*.example.com</code> 表示包含子域名）</span>
+            <textarea name="blacklist" rows="4" spellcheck="false"></textarea>
+          </label>
+          <div class="full buttons">
+            <button type="submit" class="primary">保存设置</button>
+            <button id="clearCacheBtn" type="button">清除通用识别缓存</button>
+            <span id="settingsMsg" class="msg"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>自定义规则 <small>优先级高于内置规则，自上而下匹配</small></h2>
+          <div class="buttons">
+            <button id="addRuleBtn" type="button" class="primary">新增规则</button>
+            <button id="exportBtn" type="button">导出 JSON</button>
+            <button id="importBtn" type="button">导入 JSON</button>
+            <input id="importFile" type="file" accept=".json,application/json" hidden />
+          </div>
+        </div>
+        <p id="rulesMsg" class="msg"></p>
+        <table class="rules">
+          <thead>
+            <tr>
+              <th>启用</th>
+              <th>名称</th>
+              <th>URL 正则</th>
+              <th>正文元素</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="customRules"></tbody>
+        </table>
+
+        <details id="importBox" class="import">
+          <summary>粘贴 JSON 导入</summary>
+          <textarea id="importText" rows="6" spellcheck="false" placeholder='[{"name": "...", "url": "...", "nextLink": "...", "pageElement": "..."}]'></textarea>
+          <div class="buttons">
+            <button id="importTextBtn" type="button">追加导入</button>
+            <button id="replaceTextBtn" type="button">覆盖导入</button>
+          </div>
+        </details>
+      </section>
+
+      <section class="card">
+        <h2>内置规则 <small>只读，可复制为自定义规则后修改</small></h2>
+        <table class="rules">
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>URL 正则 / 匹配特征</th>
+              <th>正文元素</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="builtinRules"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <dialog id="ruleDialog">
+      <form id="ruleForm" method="dialog" class="grid">
+        <h2 class="full" id="ruleDialogTitle">编辑规则</h2>
+        <label class="full">名称<input name="name" required /></label>
+        <label class="full">URL 正则（留空表示任意页面）<input name="url" spellcheck="false" /></label>
+        <label class="full">匹配特征 match（页面中必须存在的元素，CSS 或 XPath）<input name="match" spellcheck="false" /></label>
+        <label class="full">下一页链接 nextLink<input name="nextLink" spellcheck="false" /></label>
+        <label class="full">正文元素 pageElement（留空则自动识别）<input name="pageElement" spellcheck="false" /></label>
+        <label class="full">插入到该元素之前 insertBefore<input name="insertBefore" spellcheck="false" /></label>
+        <label>翻页参数 pageParam<input name="pageParam" spellcheck="false" placeholder="如 page" /></label>
+        <label>参数步长 pageStep<input name="pageStep" type="number" min="1" placeholder="1" /></label>
+        <label>编码 charset<input name="charset" spellcheck="false" placeholder="auto / gbk / utf-8" /></label>
+        <label>懒加载属性 lazyAttrs（逗号分隔）<input name="lazyAttrs" spellcheck="false" placeholder="data-src, file" /></label>
+        <label class="check"><input name="unwrapComments" type="checkbox" /> 展开注释中的 HTML（贴吧类）</label>
+        <label class="check"><input name="exclude" type="checkbox" /> 排除规则（命中后不分页）</label>
+        <div class="full buttons">
+          <button type="submit" value="save" class="primary">保存</button>
+          <button type="submit" value="cancel" formnovalidate>取消</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="shared/storage.js"></script>
+    <script src="content/rules-builtin.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
